@@ -2,8 +2,26 @@ const inquirer = require('inquirer');
 
 // const Employee = require('./lib/Employee.js');
 const Manager = require('./lib/Manager.js');
-// const Engineer = require('./lib/Engineer.js');
-// const Intern = require('./lib/Intern.js');
+const Engineer = require('./lib/Engineer.js');
+const Intern = require('./lib/Intern.js');
+
+const createManager = (managerData) => {
+    manager = new Manager(managerData.name, managerData.id, managerData.email, 'Manager', managerData.officeNumber);
+    console.log(manager);
+    return manager;
+}
+
+const createEngineer = (engineerData) => {
+    engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, 'Engineer', engineerData.github);
+    console.log(engineer);
+    return engineer;
+}
+
+const createIntern = (internData) => {
+    intern = new Intern(internData.name, internData.id, internData.email, 'Intern', internData.school);
+    console.log(intern);
+    return intern;
+}
 
 
 // const employee = new Employee('Joe', '1', 'myemail.1@email.com');
@@ -54,32 +72,19 @@ const promptManager = () => {
             name: 'officeNumber',
             message: 'Office Number: '
         }
-    ]);
-};
-
-const promptMenu = () => {
-    console.log(`
-    =================
-     Add Team Member
-    =================
-    `);
-    return inquirer.prompt([
-        {
-            type: 'list',
-            name: 'role',
-            message: 'Add which employee role?',
-            choices: ['Engineer', 'Intern', 'Finish']
-        }
     ])
+    .then(addManager => {
+        return createManager(addManager);
+    });
 };
-
 
 const promptTeam = teamData => {
-    // If there's no 'team' array property, create one
+    // If there's no 'employees' array property, create one
     if (!teamData.employees) {
         teamData.employees = [];
+        teamData.employees.push(teamData);
     }
-    // console.log(teamData);
+    console.log('team Data: '+teamData);
 
     console.log(`
     =================
@@ -89,12 +94,12 @@ const promptTeam = teamData => {
     return inquirer.prompt(
         {
             type: 'list',
-            name: 'role',
+            name: 'addNew',
             message: 'Add which employee role?',
             choices: ['Engineer', 'Intern', 'Finish']
         }
     ).then(addEmployee => {
-        if (addEmployee.role == 'Engineer') {
+        if (addEmployee.addNew == 'Engineer') {
             console.log(`
     =================
     Add an Engineer
@@ -130,8 +135,15 @@ const promptTeam = teamData => {
                     message: 'Github user name: '
                 }
             ])
+            .then(addEngineer => {
+                return createEngineer(addEngineer);
+            })
+            .then(teamData => {
+                teamData.employees.push(teamData);
+                return teamData;
+            });
         }
-        if (addEmployee.role == 'Intern') {
+        else if (addEmployee.addNew == 'Intern') {
             console.log(`
     =================
     Add an Intern
@@ -167,15 +179,29 @@ const promptTeam = teamData => {
                     message: 'School name: '
                 }
             ])
+            .then(addIntern => {
+                return createIntern(addIntern);
+            })
+            .then(teamData => {
+                teamData.employees.push(teamData);
+                return teamData;
+            });
+        }
+        else if (addEmployee.addNew == 'Finish') {
+            console.log('Done adding employees.');
+            return {addNew: 'Finish'};
         }
     }).then(teamData => {
-        if (newEmployee.role == 'Intern' || newEmployee.role == 'Engineer') {
-            teamData.employees.push(teamData);
+        // console.log(teamData);
+        if (teamData.addNew == 'Intern' || teamData.addNew == 'Engineer') {
+            // teamData.employees.push(teamData);
             console.log('Employee added');
             //then restart loop
+            return promptTeam(teamData);
         }
         else {
-            console.log('Finish');
+            console.log('Ready to generate HTML');
+            return teamData;
             // then exit loop
         }
     })
@@ -183,36 +209,24 @@ const promptTeam = teamData => {
 
 
 
-const createManager = (managerData) => {
-    manager = new Manager(managerData.name, managerData.id, managerData.email, 'manager', managerData.officeNumber);
-    console.log(manager);
-    return manager;
-}
+// const addTeam = (menuChoice) => {
+//     console.log(menuChoice);
 
-// const createEngineer = (engineerData) => {
-//     manager = new Manager(managerData.name, managerData.id, managerData.email, 'manager', managerData.officeNumber);
-//      console.log(manager);
-//     return manager;
+//     while(menuChoice.role != 'Done') {
+//         if(menuChoice.role == 'Engineer') {
+//             console.log('Get engineer data');
+//             promptTeam(menuChoice);
+//             // return false;
+//         } else if (menuChoice.role == 'Intern') {
+//             console.log('Get intern data');
+//         } else {
+//             console.log('Done')
+//             return false;
+//         }
+//     }
+//     console.log('Done')
+//     return false;
 // }
-
-const addTeam = (menuChoice) => {
-    console.log(menuChoice);
-
-    while(menuChoice.role != 'Done') {
-        if(menuChoice.role == 'Engineer') {
-            console.log('Get engineer data');
-            promptTeam(menuChoice);
-            // return false;
-        } else if (menuChoice.role == 'Intern') {
-            console.log('Get intern data');
-        } else {
-            console.log('Done')
-            return false;
-        }
-    }
-    console.log('Done')
-    return false;
-}
 
 
 promptManager()
