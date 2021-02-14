@@ -1,40 +1,22 @@
 const inquirer = require('inquirer');
-
-// const Employee = require('./lib/Employee.js');
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
 
 const createManager = (managerData) => {
     manager = new Manager(managerData.name, managerData.id, managerData.email, 'Manager', managerData.officeNumber);
-    console.log(manager);
     return manager;
 }
 
 const createEngineer = (engineerData) => {
     engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, 'Engineer', engineerData.github);
-    console.log(engineer);
     return engineer;
 }
 
 const createIntern = (internData) => {
     intern = new Intern(internData.name, internData.id, internData.email, 'Intern', internData.school);
-    console.log(intern);
     return intern;
 }
-
-
-// const employee = new Employee('Joe', '1', 'myemail.1@email.com');
-// console.log(employee);
-
-// const manager = new Manager('Sally', '2', 'myemail.2@email.com', 'manager', '777');
-// console.log(manager);
-
-// const engineer = new Engineer('Bob', '3', 'myemail.3@email.com', 'engineer', 'my_git_hub');
-// console.log(engineer);
-
-// const intern = new Intern('Betty', '4', 'myemail.4@email.com', 'intern', 'my_school');
-// console.log(intern);
 
 const promptManager = () => {
     console.log(`
@@ -82,9 +64,7 @@ const promptTeam = teamData => {
     // If there's no 'employees' array property, create one
     if (!teamData.employees) {
         teamData.employees = [];
-        teamData.employees.push(teamData);
     }
-    console.log('team Data: '+teamData);
 
     console.log(`
     =================
@@ -95,7 +75,7 @@ const promptTeam = teamData => {
         {
             type: 'list',
             name: 'addNew',
-            message: 'Add which employee role?',
+            message: 'Add which employee type?',
             choices: ['Engineer', 'Intern', 'Finish']
         }
     ).then(addEmployee => {
@@ -138,9 +118,30 @@ const promptTeam = teamData => {
             .then(addEngineer => {
                 return createEngineer(addEngineer);
             })
-            .then(teamData => {
-                teamData.employees.push(teamData);
+            .then(employeeData => {
+                teamData.employees.push(employeeData);
                 return teamData;
+            })
+            .then(teamData => {
+                return inquirer.prompt(
+                    {
+                        type: 'confirm',
+                        name: 'confirmAddEmployee',
+                        message: 'Would you like to enter another employee?',
+                        default: false
+                    }
+                ).then(addEmployee => {
+                    if (addEmployee.confirmAddEmployee) {
+                        return promptTeam(teamData);
+                    } else {
+                        addEmployee.addNew == 'Finish';
+                        return teamData;
+                    }
+                }).then(teamData => {
+                    return teamData
+                })  
+            }).then(teamData => {
+                return teamData
             });
         }
         else if (addEmployee.addNew == 'Intern') {
@@ -182,70 +183,44 @@ const promptTeam = teamData => {
             .then(addIntern => {
                 return createIntern(addIntern);
             })
-            .then(teamData => {
-                teamData.employees.push(teamData);
+            .then(employeeData => {
+                teamData.employees.push(employeeData);
                 return teamData;
+            })
+            .then(teamData => {
+                return inquirer.prompt(
+                    {
+                        type: 'confirm',
+                        name: 'confirmAddEmployee',
+                        message: 'Would you like to enter another employee?',
+                        default: false
+                    }
+                ).then(addEmployee => {
+                    if (addEmployee.confirmAddEmployee) {
+                        return promptTeam(teamData);
+                    } else {
+                        addEmployee.addNew == 'Finish';
+                        return teamData;
+                    }
+                }).then(teamData => {
+                    return teamData
+                })  
+            }).then(teamData => {
+                return teamData
             });
         }
         else if (addEmployee.addNew == 'Finish') {
             console.log('Done adding employees.');
-            return {addNew: 'Finish'};
+            return teamData;
         }
     }).then(teamData => {
-        // console.log(teamData);
-        if (teamData.addNew == 'Intern' || teamData.addNew == 'Engineer') {
-            // teamData.employees.push(teamData);
-            console.log('Employee added');
-            //then restart loop
-            return promptTeam(teamData);
-        }
-        else {
-            console.log('Ready to generate HTML');
             return teamData;
-            // then exit loop
-        }
     })
 };
 
-
-
-// const addTeam = (menuChoice) => {
-//     console.log(menuChoice);
-
-//     while(menuChoice.role != 'Done') {
-//         if(menuChoice.role == 'Engineer') {
-//             console.log('Get engineer data');
-//             promptTeam(menuChoice);
-//             // return false;
-//         } else if (menuChoice.role == 'Intern') {
-//             console.log('Get intern data');
-//         } else {
-//             console.log('Done')
-//             return false;
-//         }
-//     }
-//     console.log('Done')
-//     return false;
-// }
-
-
 promptManager()
-    .then(promptTeam);
-//    .then(managerData => {
-//     // console.log(managerData);
-//     createManager(managerData);
-//     return managerData;
-//    })
-//    .then(menuChoice  => {
-//     return promptMenu(menuChoice);
-//    })
-//    .then(menuChoice => {
-//     // console.log(managerData);
-//     // console.log(menuChoice);
-//     return addTeam(menuChoice);    
-//    })
-//    .then(teamData => {
-//     // console.log(menuChoice);
-//     return promptTeam(teamData);
-//    })
+    .then(promptTeam)
+    .then(teamData => {
+        console.log(teamData);
+   })
    ;
