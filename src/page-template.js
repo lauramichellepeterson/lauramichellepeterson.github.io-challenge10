@@ -78,7 +78,6 @@ const generateTeam = team => {
 
 module.exports = templateData => {
     // destructure page data by section
-    console.log(templateData);
     const manager = templateData;
     const employeeArr = templateData.employees;
 
