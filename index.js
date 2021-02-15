@@ -2,6 +2,8 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
+const generatePage = require('./src/page-template.js');
+const { writeFile, copyFile } = require('./utils/generate-site.js');
 
 const createManager = (managerData) => {
     manager = new Manager(managerData.name, managerData.id, managerData.email, 'Manager', managerData.officeNumber);
@@ -220,7 +222,25 @@ const promptTeam = teamData => {
 
 promptManager()
     .then(promptTeam)
+    // .then(teamData => {
+    //     console.log(teamData);
+    // })
     .then(teamData => {
-        console.log(teamData);
-   })
+    return generatePage(teamData);
+    // return generatePage(mockData);
+    })
+    .then(pageHTML => {
+    return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+    console.log(writeFileResponse);
+    return copyFile();
+    })
+    .then(copyFileResponse => {
+    console.log(copyFileResponse);
+    })
+    .catch(err => {
+    console.log(err);
+    });
+
    ;

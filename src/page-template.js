@@ -1,17 +1,75 @@
-// create the about section
-const generateAbout = aboutText => {
-    if (!aboutText) {
-      return '';
-    }
-  
-    return `
-      <section class="my-3" id="about">
-        <h2 class="text-dark bg-primary p-2 display-inline-block">About Me</h2>
-        <p>${aboutText}</p>
-      </section>
-    `;
+const Manager = require("../lib/Manager");
+
+// create the Manager section
+const generateManager = manager => {
+  if (!manager) {
+    return '';
+  }
+
+  return `
+    <section class="my-3" id="manager">
+      <h2 class="text-dark bg-primary p-2 display-inline-block">Manager</h2>
+      <h3>${manager.name}</h3>
+      <h5>ID: ${manager.id}</h5>
+      <h5><a href="mailto:${manager.email}">${manager.email}</a></h5>
+      <h5>Office Number: ${manager.officeNumber}</h5>
+    </section>
+  `;
 };
 
+// create the Team section
+const generateTeam = team => {
+  if (!team) {
+    return '';
+  }
+
+  return `
+    <section class="my-3" id="employees">
+      <h2 class="text-dark bg-primary p-2 display-inline-block">Employees</h2>
+      <div class="flex-row justify-space-between">
+        <div flex-column>
+          ${team
+            .filter(employee => {
+              if (employee.role == 'Engineer') {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .map(({ role, name, id, email, github }) => {
+              return `
+              <h3>${name}</h3>
+              <h5>ID: ${id}</h5>
+              <h5>${role}</h5>
+              <h5><a href="mailto:${email}">${email}</a></h5>
+              <a href="\n${github}" class="btn"><i class="fab fa-github mr-2"></i>View GitHub</a>
+              `;
+              })
+              .join('')}
+
+              ${team
+                .filter(employee => {
+                  if (employee.role == 'Intern') {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                })
+                .map(({ role, name, id, email, school }) => {
+                  return `
+                  <h3>${name}</h3>
+                  <h5>ID: ${id}</h5>
+                  <h5>${role}</h5>
+                  <h5><a href="mailto:${email}">${email}</a></h5>
+                  <h5>School: ${school}</h5>
+                  `;
+                  })
+                  .join('')}
+          </div>
+      </div>
+    </section>
+  `;
+};
 
 const generateProjects = projectsArr => {
     return `
@@ -60,8 +118,17 @@ const generateProjects = projectsArr => {
 module.exports = templateData => {
 // const generatePage = templateData => {
     // destructure page data by section
-    const { projects, about, ...header } = templateData;
-  
+    console.log(templateData);
+    const manager = templateData;
+    const employeeArr = templateData.employees;
+    // const engineers = employeeArr.filter(employee => {
+    //   if (employee.role == 'Engineer') {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
+
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -79,24 +146,21 @@ module.exports = templateData => {
     <body>
       <header>
         <div class="container flex-row justify-space-between align-center py-3">
-          <h1 class="page-title text-secondary bg-dark py-2 px-3">${header.name}</h1>
-          <nav class="flex-row">
-            <a class="ml-2 my-1 px-2 py-1 bg-secondary text-dark" href="https://github.com/${
-              header.github
-            }">GitHub</a>
-          </nav>
+          <h1 class="page-title text-secondary bg-dark py-2 px-3">My Team</h1>
         </div>
       </header>
       <main class="container my-5">
-        ${generateAbout(about)}
-        ${generateProjects(projects)}
+      ${generateManager(manager)}
+      ${generateTeam(employeeArr)}
       </main>
       <footer class="container text-center py-3">
-        <h3 class="text-dark">&copy; ${new Date().getFullYear()} by ${header.name}</h3>
+        <h3 class="text-dark">&copy; ${new Date().getFullYear()}</h3>
       </footer>
     </body>
     </html>
     `;
 };
+
+        // by ${header.name}
 
 // module.exports = generatePage;
