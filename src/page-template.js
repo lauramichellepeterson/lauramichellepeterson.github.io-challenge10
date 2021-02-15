@@ -8,7 +8,7 @@ const generateManager = manager => {
 
   return `
     <section class="my-3" id="manager">
-      <h2 class="text-dark bg-primary p-2 display-inline-block">Manager</h2>
+      <h2 class="container-fluid text-dark bg-primary p-2 display-inline-block">Manager</h2>
       <h3>${manager.name}</h3>
       <h5>ID: ${manager.id}</h5>
       <h5><a href="mailto:${manager.email}">${manager.email}</a></h5>
@@ -24,10 +24,10 @@ const generateTeam = team => {
   }
 
   return `
-    <section class="my-3" id="employees">
-      <h2 class="text-dark bg-primary p-2 display-inline-block">Employees</h2>
+    <section class="container-fluid my-3" id="employees">
+      <h2 class="container-fluid text-dark bg-primary p-2 display-inline-block">Employees</h2>
       <div class="flex-row justify-space-between">
-        <div flex-column>
+        <div class ="flex-row justify-space-around">
           ${team
             .filter(employee => {
               if (employee.role == 'Engineer') {
@@ -38,12 +38,14 @@ const generateTeam = team => {
             })
             .map(({ role, name, id, email, github }) => {
               return `
-              <h3>${name}</h3>
-              <h5>ID: ${id}</h5>
-              <h5>${role}</h5>
-              <h5><a href="mailto:${email}">${email}</a></h5>
-              <a href="\n${github}" class="btn"><i class="fab fa-github mr-2"></i>View GitHub</a>
-              `;
+              <div class="p-4">
+                <h3>${role}</h3>
+                <h4>${name}</h4>
+                <h5>ID: ${id}</h5>
+                <h5><a href="mailto:${email}">${email}</a></h5>
+                <a href="\n${github}" class="btn"><i class="fab fa-github mr-2"></i>View GitHub</a>
+              </div>
+                `;
               })
               .join('')}
 
@@ -57,11 +59,13 @@ const generateTeam = team => {
                 })
                 .map(({ role, name, id, email, school }) => {
                   return `
-                  <h3>${name}</h3>
-                  <h5>ID: ${id}</h5>
-                  <h5>${role}</h5>
-                  <h5><a href="mailto:${email}">${email}</a></h5>
-                  <h5>School: ${school}</h5>
+                  <div class="p-4">
+                    <h3>${role}</h3>
+                    <h4>${name}</h4>
+                    <h5>ID: ${id}</h5>
+                    <h5><a href="mailto:${email}">${email}</a></h5>
+                    <h5>School: ${school}</h5>
+                  </div>
                   `;
                   })
                   .join('')}
