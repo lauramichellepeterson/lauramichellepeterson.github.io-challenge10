@@ -17,7 +17,7 @@ const generateManager = manager => {
   `;
 };
 
-// create the Team section
+// create the Employee section
 const generateTeam = team => {
   if (!team) {
     return '';
@@ -43,95 +43,44 @@ const generateTeam = team => {
                 <h4>${name}</h4>
                 <h5>ID: ${id}</h5>
                 <h5><a href="mailto:${email}">${email}</a></h5>
-                <a href="\n${github}" class="btn"><i class="fab fa-github mr-2"></i>View GitHub</a>
+                <a href="${github}" class="btn"><i class="fab fa-github mr-2"></i>View GitHub</a>
               </div>
                 `;
               })
               .join('')}
 
-              ${team
-                .filter(employee => {
-                  if (employee.role == 'Intern') {
-                    return true;
-                  } else {
-                    return false;
-                  }
-                })
-                .map(({ role, name, id, email, school }) => {
-                  return `
-                  <div class="p-4">
-                    <h3>${role}</h3>
-                    <h4>${name}</h4>
-                    <h5>ID: ${id}</h5>
-                    <h5><a href="mailto:${email}">${email}</a></h5>
-                    <h5>School: ${school}</h5>
-                  </div>
-                  `;
-                  })
-                  .join('')}
+          ${team
+            .filter(employee => {
+              if (employee.role == 'Intern') {
+                return true;
+              } else {
+                return false;
+              }
+            })
+            .map(({ role, name, id, email, school }) => {
+              return `
+              <div class="p-4">
+                <h3>${role}</h3>
+                <h4>${name}</h4>
+                <h5>ID: ${id}</h5>
+                <h5><a href="mailto:${email}">${email}</a></h5>
+                <h5>School: ${school}</h5>
+              </div>
+              `;
+              })
+              .join('')}
           </div>
       </div>
     </section>
   `;
 };
 
-const generateProjects = projectsArr => {
-    return `
-      <section class="my-3" id="portfolio">
-        <h2 class="text-dark bg-primary p-2 display-inline-block">Work</h2>
-        <div class="flex-row justify-space-between">
-        ${projectsArr
-          .filter(({ feature }) => feature)
-          .map(({ name, description, languages, link }) => {
-            return `
-            <div class="col-12 mb-2 bg-dark text-light p-3">
-              <h3 class="portfolio-item-title text-light">${name}</h3>
-              <h5 class="portfolio-languages">
-                Built With:
-                ${languages.join(', ')}
-              </h5>
-              <p>${description}</p>
-              <a href="${link}" class="btn"><i class="fab fa-github mr-2"></i>View Project on GitHub</a>
-            </div>
-          `;
-          })
-          .join('')}
-  
-        ${projectsArr
-          .filter(({ feature }) => !feature)
-          .map(({ name, description, languages, link }) => {
-            return `
-            <div class="col-12 col-md-6 mb-2 bg-dark text-light p-3 flex-column">
-              <h3 class="portfolio-item-title text-light">${name}</h3>
-              <h5 class="portfolio-languages">
-                Built With:
-                ${languages.join(', ')}
-              </h5>
-              <p>${description}</p>
-              <a href="${link}" class="btn mt-auto"><i class="fab fa-github mr-2"></i>View Project on GitHub</a>
-            </div>
-          `;
-          })
-          .join('')}
-        </div>
-      </section>
-    `;
-  };
-
 
 module.exports = templateData => {
-// const generatePage = templateData => {
     // destructure page data by section
     console.log(templateData);
     const manager = templateData;
     const employeeArr = templateData.employees;
-    // const engineers = employeeArr.filter(employee => {
-    //   if (employee.role == 'Engineer') {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // });
 
     return `
     <!DOCTYPE html>
@@ -164,7 +113,3 @@ module.exports = templateData => {
     </html>
     `;
 };
-
-        // by ${header.name}
-
-// module.exports = generatePage;

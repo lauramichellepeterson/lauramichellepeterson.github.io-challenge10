@@ -222,12 +222,8 @@ const promptTeam = teamData => {
 
 promptManager()
     .then(promptTeam)
-    // .then(teamData => {
-    //     console.log(teamData);
-    // })
     .then(teamData => {
     return generatePage(teamData);
-    // return generatePage(mockData);
     })
     .then(pageHTML => {
     return writeFile(pageHTML);
@@ -242,5 +238,4 @@ promptManager()
     .catch(err => {
     console.log(err);
     });
-
-   ;
+;

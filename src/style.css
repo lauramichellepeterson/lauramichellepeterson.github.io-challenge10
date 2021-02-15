@@ -78,16 +78,6 @@ header {
   top: 0;
 }
 
-nav {
-  width: 100%;
-  margin-top: 10px;
-  justify-content: center;
-}
-
-/* nav a:hover {
-  color: var(--secondary);
-  background-color: var(--dark);
-} */
 
 .page-title {
   text-align: center;
@@ -95,12 +85,6 @@ nav {
   margin: 0;
   font-size: 2.5rem;
 }
-
-/* .portfolio-languages {
-  font-size: 1rem;
-  font-style: italic;
-  color: var(--light);
-} */
 
 .btn {
   font-size: 1.3rem;
