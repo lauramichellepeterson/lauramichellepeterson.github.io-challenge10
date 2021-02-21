@@ -11,7 +11,7 @@ Here is an example of the index.html file generated using this application
 ![ExampleReadMeScreenshot](./assets/images/Challenge_10_screenshot.png)
 
 ## Walk Through
-![Walk Through Video](https://drive.google.com/file/d/1VbRddYaJt_LOxBI059urGndu1jgN3QPI/view?usp=sharing)
+https://drive.google.com/file/d/1VbRddYaJt_LOxBI059urGndu1jgN3QPI/view?usp=sharing
 
 ## Contact Me
 https://github.com/lauramichellepeterson
