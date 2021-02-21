@@ -20,6 +20,7 @@ const createIntern = (internData) => {
     return intern;
 }
 
+// get manager info from the user via the console
 const promptManager = () => {
     console.log(`
     =================
